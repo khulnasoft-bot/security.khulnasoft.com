@@ -1,216 +1,126 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import VulnerabilityCard from "@/components/vulnerability-card"
-import { Search, Filter, Shield } from "lucide-react"
+import Link from "next/link"
+import { fetchVulnerabilities } from "@/lib/vuln-list"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { SeverityBadge } from "@/components/severity-badge"
+import type { Vulnerability } from "@/lib/vuln-list"
 
-export default function VulnerabilitiesPage() {
+export const revalidate = 60
+
+function SourceBadge({ source }: { source: Vulnerability["source"] }) {
+  const cls =
+    source === "ghsa"
+      ? "bg-purple-500/15 text-purple-500 border-purple-500/30"
+      : source === "nvd"
+        ? "bg-blue-500/15 text-blue-500 border-blue-500/30"
+        : source === "osv"
+          ? "bg-indigo-500/15 text-indigo-500 border-indigo-500/30"
+          : "bg-muted text-foreground/70 border-border"
   return (
-    <div className="container py-8">
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Shield className="h-6 w-6 text-primary" />
-            Vulnerabilities
-          </h1>
-          <p className="text-muted-foreground">
-            Browse and search through our comprehensive database of vulnerabilities
-          </p>
-        </div>
+    <Badge variant="outline" className={cls}>
+      {source.toUpperCase()}
+    </Badge>
+  )
+}
 
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search by CVE, package name, or keyword..."
-              className="pl-9 bg-background/60 backdrop-blur-sm border-primary/20 search-glow"
-            />
-          </div>
+export default async function VulnerabilitiesPage({
+  searchParams,
+}: {
+  searchParams?: { source?: "ghsa" | "nvd" | "osv"; page?: string; perPage?: string }
+}) {
+  const source = (searchParams?.source as any) || "ghsa"
+  const page = Number(searchParams?.page || "1")
+  const perPage = Number(searchParams?.perPage || "20")
+
+  const items = await fetchVulnerabilities(source, page, perPage)
+
+  return (
+    <main className="container mx-auto px-4 py-8">
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Vulnerabilities</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center gap-3">
+          <span className="text-sm text-muted-foreground">Source:</span>
           <div className="flex gap-2">
-            <Select defaultValue="all">
-              <SelectTrigger className="w-[180px] bg-background/60 backdrop-blur-sm border-primary/20">
-                <SelectValue placeholder="Severity" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Severities</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="outline" className="gap-2 border-primary/40 hover:bg-primary/10">
-              <Filter className="h-4 w-4" />
-              More Filters
-            </Button>
+            <Link href={`/vulnerabilities?source=ghsa`} className="text-sm">
+              <Badge variant={source === "ghsa" ? "default" : "outline"}>GHSA</Badge>
+            </Link>
+            <Link href={`/vulnerabilities?source=nvd`} className="text-sm">
+              <Badge variant={source === "nvd" ? "default" : "outline"}>NVD</Badge>
+            </Link>
+            <Link href={`/vulnerabilities?source=osv`} className="text-sm">
+              <Badge variant={source === "osv" ? "default" : "outline"}>OSV</Badge>
+            </Link>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        <Tabs defaultValue="all">
-          <TabsList className="bg-muted/50">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="application">Application</TabsTrigger>
-            <TabsTrigger value="os">Operating System</TabsTrigger>
-            <TabsTrigger value="cloud">Cloud</TabsTrigger>
-          </TabsList>
-          <TabsContent value="all" className="space-y-4 mt-4">
-            <VulnerabilityCard
-              id="GHSA-xvch-r4wf-h8w9"
-              title="Command Injection in express-fileupload"
-              severity={3.8}
-              affects={["express-fileupload"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="GHSA-7rqg-2h9m-v13r"
-              title="Prototype Pollution in lodash"
-              severity={4.2}
-              affects={["lodash"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-4863"
-              title="Heap Buffer Overflow in WebP"
-              severity={4.0}
-              affects={["libwebp", "chromium"]}
-              type="os"
-            />
-            <VulnerabilityCard
-              id="GHSA-p6mc-m468-83gw"
-              title="Path Traversal in adm-zip"
-              severity={3.5}
-              affects={["adm-zip"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-5129"
-              title="Privilege Escalation in Linux Kernel"
-              severity={3.7}
-              affects={["linux-kernel"]}
-              type="os"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-3676"
-              title="Container Escape in Docker"
-              severity={3.9}
-              affects={["docker-engine"]}
-              type="cloud"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-2878"
-              title="Privilege Escalation in Kubernetes"
-              severity={4.1}
-              affects={["kubernetes"]}
-              type="cloud"
-            />
-            <VulnerabilityCard
-              id="GHSA-h452-7996-h45h"
-              title="SQL Injection in sequelize"
-              severity={4.3}
-              affects={["sequelize"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="GHSA-4q6j-m53g-58rp"
-              title="Cross-Site Scripting in react-markdown"
-              severity={3.2}
-              affects={["react-markdown"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-6129"
-              title="Denial of Service in nginx"
-              severity={3.6}
-              affects={["nginx"]}
-              type="os"
-            />
-          </TabsContent>
-          <TabsContent value="application" className="space-y-4 mt-4">
-            <VulnerabilityCard
-              id="GHSA-xvch-r4wf-h8w9"
-              title="Command Injection in express-fileupload"
-              severity={3.8}
-              affects={["express-fileupload"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="GHSA-7rqg-2h9m-v13r"
-              title="Prototype Pollution in lodash"
-              severity={4.2}
-              affects={["lodash"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="GHSA-p6mc-m468-83gw"
-              title="Path Traversal in adm-zip"
-              severity={3.5}
-              affects={["adm-zip"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="GHSA-h452-7996-h45h"
-              title="SQL Injection in sequelize"
-              severity={4.3}
-              affects={["sequelize"]}
-              type="application"
-            />
-            <VulnerabilityCard
-              id="GHSA-4q6j-m53g-58rp"
-              title="Cross-Site Scripting in react-markdown"
-              severity={3.2}
-              affects={["react-markdown"]}
-              type="application"
-            />
-          </TabsContent>
-          <TabsContent value="os" className="space-y-4 mt-4">
-            <VulnerabilityCard
-              id="CVE-2023-4863"
-              title="Heap Buffer Overflow in WebP"
-              severity={4.0}
-              affects={["libwebp", "chromium"]}
-              type="os"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-5129"
-              title="Privilege Escalation in Linux Kernel"
-              severity={3.7}
-              affects={["linux-kernel"]}
-              type="os"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-6129"
-              title="Denial of Service in nginx"
-              severity={3.6}
-              affects={["nginx"]}
-              type="os"
-            />
-          </TabsContent>
-          <TabsContent value="cloud" className="space-y-4 mt-4">
-            <VulnerabilityCard
-              id="CVE-2023-3676"
-              title="Container Escape in Docker"
-              severity={3.9}
-              affects={["docker-engine"]}
-              type="cloud"
-            />
-            <VulnerabilityCard
-              id="CVE-2023-2878"
-              title="Privilege Escalation in Kubernetes"
-              severity={4.1}
-              affects={["kubernetes"]}
-              type="cloud"
-            />
-          </TabsContent>
-        </Tabs>
+      <Card>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[220px]">ID</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead className="w-[120px]">Severity</TableHead>
+                <TableHead className="w-[110px]">Source</TableHead>
+                <TableHead className="w-[180px]">Published</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((v) => (
+                <TableRow key={`${v.source}-${v.id}`}>
+                  <TableCell className="font-medium">
+                    <Link href={`/vulnerability/${encodeURIComponent(v.id)}`} className="hover:underline">
+                      {v.id}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="pr-6">
+                    <div className="line-clamp-2">{v.title}</div>
+                  </TableCell>
+                  <TableCell>
+                    <SeverityBadge score={v.severity} />
+                  </TableCell>
+                  <TableCell>
+                    <SourceBadge source={v.source} />
+                  </TableCell>
+                  <TableCell>
+                    <time dateTime={v.published || v.updated}>
+                      {(v.published || v.updated || "").replace("T", " ").replace("Z", "")}
+                    </time>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {items.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                    No vulnerabilities found for source {source.toUpperCase()}.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
-        <div className="flex justify-center mt-4">
-          <Button variant="outline" className="border-primary/40 hover:bg-primary/10">
-            Load more
-          </Button>
-        </div>
+      <div className="flex items-center justify-between mt-6">
+        <Link
+          href={`/vulnerabilities?source=${source}&page=${Math.max(page - 1, 1)}&perPage=${perPage}`}
+          className="text-sm underline-offset-4 hover:underline"
+          aria-disabled={page <= 1}
+        >
+          Previous
+        </Link>
+        <div className="text-sm text-muted-foreground">Page {page}</div>
+        <Link
+          href={`/vulnerabilities?source=${source}&page=${page + 1}&perPage=${perPage}`}
+          className="text-sm underline-offset-4 hover:underline"
+        >
+          Next
+        </Link>
       </div>
-    </div>
+    </main>
   )
 }

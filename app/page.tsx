@@ -9,6 +9,7 @@ import FeaturedVulnerability from "@/components/featured-vulnerability"
 import VulnerabilityCard from "@/components/vulnerability-card"
 import RealTimeFeed from "@/components/real-time-feed"
 import IconCard from "@/components/icon-card"
+import SeedControls from "@/components/seed-controls"
 
 export default function Home() {
   return (
@@ -109,7 +110,7 @@ export default function Home() {
               </TabsContent>
             </Tabs>
             <div className="mt-6">
-              <Button asChild variant="outline" className="border-primary/40 hover:bg-primary/10">
+              <Button asChild variant="outline" className="border-primary/40 hover:bg-primary/10 bg-transparent">
                 <Link href="/vulnerabilities">View all vulnerabilities</Link>
               </Button>
             </div>
@@ -130,6 +131,9 @@ export default function Home() {
           Real-time Vulnerability Feed
         </h2>
         <RealTimeFeed />
+        <div className="mt-4">
+          <SeedControls />
+        </div>
       </section>
 
       <section className="container py-8">

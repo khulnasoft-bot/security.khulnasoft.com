@@ -1,92 +1,60 @@
+"use client"
+
+// English: Responsive site header with brand, nav, and theme toggle.
 import Link from "next/link"
-import { ModeToggle } from "./mode-toggle"
+import { Shield, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Search, Shield, Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import ModeToggle from "@/components/mode-toggle"
+
+const nav = [
+  { href: "/vulnerabilities", label: "Vulnerabilities" },
+  { href: "/advisories", label: "Advisories" },
+  { href: "/exploitdb", label: "ExploitDB" },
+  { href: "/resources", label: "Resources" },
+  { href: "/api-docs", label: "API Docs" },
+]
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur">
+      <div className="container flex h-14 items-center justify-between">
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative h-8 w-8">
-              <Shield className="h-8 w-8 text-primary" />
-            </div>
-            <span className="font-bold text-xl text-primary glow-text shadow-primary">KhulnaSoft</span>
-            <span className="text-muted-foreground">SECURITY</span>
+          <Shield className="h-5 w-5 text-primary" aria-hidden="true" />
+          <Link href="/" className="font-semibold hover:opacity-90">
+            KhulnaSoft Security
           </Link>
         </div>
-        <div className="flex items-center gap-4">
-          <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
-              Home
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-6 text-sm">
+          {nav.map((item) => (
+            <Link key={item.href} href={item.href} className="text-muted-foreground hover:text-foreground">
+              {item.label}
             </Link>
-            <Link href="/vulnerabilities" className="text-sm font-medium hover:text-primary transition-colors">
-              Vulnerabilities
-            </Link>
-            <Link href="/advisories" className="text-sm font-medium hover:text-primary transition-colors">
-              Advisories
-            </Link>
-            <Link href="/resources" className="text-sm font-medium hover:text-primary transition-colors">
-              Resources
-            </Link>
-            <Link href="/blog" className="text-sm font-medium hover:text-primary transition-colors">
-              Blog
-            </Link>
-            <Link href="/malware" className="text-sm font-medium hover:text-primary transition-colors">
-              Malware
-            </Link>
-            <Link href="/exploitdb" className="text-sm font-medium hover:text-primary transition-colors">
-              ExploitDB
-            </Link>
-            <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">
-              About
-            </Link>
-          </nav>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="hover:text-primary transition-colors">
-              <Search className="h-5 w-5" />
-              <span className="sr-only">Search</span>
-            </Button>
-            <ModeToggle />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <nav className="flex flex-col gap-4 mt-8">
-                  <Link href="/" className="text-lg font-medium hover:text-primary transition-colors">
-                    Home
+          ))}
+          <ModeToggle />
+        </nav>
+
+        {/* Mobile menu */}
+        <div className="md:hidden flex items-center gap-2">
+          <ModeToggle />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" aria-label="Open menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-64">
+              <div className="mt-6 flex flex-col gap-4">
+                {nav.map((item) => (
+                  <Link key={item.href} href={item.href} className="text-sm text-foreground">
+                    {item.label}
                   </Link>
-                  <Link href="/vulnerabilities" className="text-lg font-medium hover:text-primary transition-colors">
-                    Vulnerabilities
-                  </Link>
-                  <Link href="/advisories" className="text-lg font-medium hover:text-primary transition-colors">
-                    Advisories
-                  </Link>
-                  <Link href="/resources" className="text-lg font-medium hover:text-primary transition-colors">
-                    Resources
-                  </Link>
-                  <Link href="/blog" className="text-lg font-medium hover:text-primary transition-colors">
-                    Blog
-                  </Link>
-                  <Link href="/malware" className="text-lg font-medium hover:text-primary transition-colors">
-                    Malware
-                  </Link>
-                  <Link href="/exploitdb" className="text-lg font-medium hover:text-primary transition-colors">
-                    ExploitDB
-                  </Link>
-                  <Link href="/about" className="text-lg font-medium hover:text-primary transition-colors">
-                    About
-                  </Link>
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </div>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
