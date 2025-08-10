@@ -1,34 +1,37 @@
 import type React from "react"
-import { Inter } from "next/font/google"
+import type { Metadata } from "next"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
 
-const inter = Inter({ subsets: ["latin"] })
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "KhulnaSoft Security Database",
-  description: "A comprehensive database of security vulnerabilities across multiple platforms",
+  description: "Open source vulnerabilities and security advisories",
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="flex min-h-screen flex-col bg-gradient-to-b from-background to-background/95">
-            <div className="absolute inset-0 bg-[url('/grid.png')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-            <Header />
-            <main className="flex-1 relative z-10">{children}</main>
-            <Footer />
+    <html lang="en">
+      <body className="min-h-screen bg-white text-gray-900">
+        <header className="border-b">
+          <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {/* Simple shield emoji as a logo placeholder */}
+              <span aria-hidden="true">🛡️</span>
+              <span className="font-semibold">KhulnaSoft Security</span>
+            </div>
+            <nav className="text-sm">
+              <a href="/" className="hover:underline">
+                Home
+              </a>
+            </nav>
           </div>
-        </ThemeProvider>
+        </header>
+        <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+        <footer className="border-t">
+          <div className="mx-auto max-w-6xl px-4 py-6 text-sm text-gray-600">
+            {"© "} {new Date().getFullYear()} {"KhulnaSoft. All rights reserved."}
+          </div>
+        </footer>
       </body>
     </html>
   )
