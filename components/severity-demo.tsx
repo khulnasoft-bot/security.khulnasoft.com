@@ -9,4 +9,4 @@ export default function SeverityDemo() {
       <SeverityWidget score={9.2} severity="critical" />
     </div>
   )
-} 
+}
