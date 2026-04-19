@@ -3,34 +3,38 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
-import { Search, Shield, Database, RefreshCw, Code, Zap } from "lucide-react"
+import { Search, Shield, Database, RefreshCw, Code, Zap, AlertTriangle, TrendingUp, Layers } from "lucide-react"
 import PlatformIcons from "@/components/platform-icons"
 import FeaturedVulnerability from "@/components/featured-vulnerability"
 import VulnerabilityCard from "@/components/vulnerability-card"
 import RealTimeFeed from "@/components/real-time-feed"
 import IconCard from "@/components/icon-card"
 import SeedControls from "@/components/seed-controls"
+import StatCard from "@/components/stat-card"
+import SeverityDistributionChart from "@/components/severity-distribution-chart"
+import VulnerabilityTrendChart from "@/components/vulnerability-trend-chart"
+import ScrollReveal from "@/components/scroll-reveal"
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="container py-10 md:py-16 lg:py-20 hero-gradient">
-        <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4 text-center">
+      <section className="container py-8 md:py-16 lg:py-20 hero-gradient">
+        <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4 text-center px-4">
           <div className="flex items-center justify-center mb-4">
-            <Shield className="h-16 w-16 text-primary shadow-glow shadow-primary" />
+            <Shield className="h-12 w-12 md:h-16 md:w-16 text-primary shadow-glow shadow-primary animate-fade-in" />
           </div>
-          <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl glow-text shadow-primary">
+          <h1 className="text-2xl sm:text-3xl font-bold leading-tight tracking-tighter md:text-5xl lg:text-6xl glow-text shadow-primary text-balance">
             KhulnaSoft Security Database
           </h1>
-          <p className="max-w-[700px] text-lg text-muted-foreground md:text-xl">
+          <p className="max-w-[700px] text-base sm:text-lg text-muted-foreground md:text-xl text-balance">
             The leading database for open source vulnerabilities and security advisories
           </p>
-          <div className="relative w-full max-w-2xl mt-4">
-            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+          <div className="relative w-full max-w-2xl mt-4 px-2 sm:px-0">
+            <Search className="absolute left-3 sm:left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search by package name, CVE, or keyword..."
-              className="w-full pl-10 pr-4 py-6 text-base bg-background/60 backdrop-blur-sm border-primary/20 search-glow"
+              placeholder="Search by CVE or package..."
+              className="w-full pl-10 pr-4 py-5 sm:py-6 text-sm sm:text-base bg-background/60 backdrop-blur-sm border-primary/20 search-glow"
             />
           </div>
         </div>
@@ -38,6 +42,46 @@ export default function Home() {
 
       <section className="container py-8">
         <PlatformIcons />
+      </section>
+
+      <section className="container py-8">
+        <ScrollReveal>
+          <h2 className="text-2xl font-bold mb-6">Security Insights</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <StatCard
+            label="Total Vulnerabilities"
+            value="2,847"
+            trend={12}
+            icon={<AlertTriangle className="h-6 w-6" />}
+          />
+          <StatCard
+            label="Critical Issues"
+            value="45"
+            trend={-5}
+            icon={<AlertTriangle className="h-6 w-6" />}
+          />
+          <StatCard
+            label="Packages Tracked"
+            value="18,392"
+            trend={8}
+            icon={<Layers className="h-6 w-6" />}
+          />
+          <StatCard
+            label="This Week's Updates"
+            value="327"
+            trend={15}
+            icon={<TrendingUp className="h-6 w-6" />}
+          />
+        </div>
+      </section>
+
+      <section className="container py-8">
+        <ScrollReveal>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <SeverityDistributionChart />
+            <VulnerabilityTrendChart />
+          </div>
+        </ScrollReveal>
       </section>
 
       <section className="container py-8">

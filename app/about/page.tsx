@@ -169,8 +169,8 @@ export default function AboutPage() {
           </ul>
           <p className="mt-4 text-muted-foreground">
             Visit our GitHub repository at{" "}
-            <a href="https://github.com/khulnasoft-lab/vuln-list" className="text-primary hover:underline">
-              github.com/khulnasoft-lab/vuln-list
+            <a href="https://github.com/cvedb/vuln-list" className="text-primary hover:underline">
+              github.com/cvedb/vuln-list
             </a>{" "}
             to learn more about how to contribute.
           </p>
