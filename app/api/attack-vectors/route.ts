@@ -1,14 +1,14 @@
-import { createClient } from '@supabase/supabase-js'
+import { getSupabaseServerClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabase = getSupabaseServerClient()
 
-// GET attack vectors
 export async function GET(request: NextRequest) {
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
   try {
+
     const searchParams = request.nextUrl.searchParams
     const taxonomyId = searchParams.get('taxonomyId')
     const vectorId = searchParams.get('vectorId')
@@ -46,6 +46,9 @@ export async function GET(request: NextRequest) {
 
 // POST create attack vector
 export async function POST(request: NextRequest) {
+  if (!supabase) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 })
+  }
   try {
     const body = await request.json()
 

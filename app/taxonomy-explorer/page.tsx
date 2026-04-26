@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { 
-  TreeStructure, 
+  GitBranch, 
   ListIcon, 
   ShieldIcon, 
   BookOpen, 
@@ -13,8 +13,7 @@ import {
   ExternalLink,
   ArrowRight,
   GitCompare,
-  BarChart3,
-  GitBranch
+  BarChart3
 } from 'lucide-react'
 import TaxonomyNavigation from '@/components/taxonomy/taxonomy-navigation'
 
@@ -37,7 +36,7 @@ export default function TaxonomyHome() {
     {
       title: 'Attack Tree',
       description: 'Hierarchical organization of attack vectors and techniques',
-      icon: TreeStructure,
+      icon: GitBranch,
       href: '/taxonomy-explorer/attack-tree',
     },
     {

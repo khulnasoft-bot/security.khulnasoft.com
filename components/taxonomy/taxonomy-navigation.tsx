@@ -3,11 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { TreeStructure, ListIcon, ShieldIcon, BookOpen, Home } from 'lucide-react'
+import { GitBranch, ListIcon, ShieldIcon, BookOpen, Home } from 'lucide-react'
 
 const navigationItems = [
   { href: '/taxonomy-explorer', label: 'Home', icon: Home },
-  { href: '/taxonomy-explorer/attack-tree', label: 'Attack Tree', icon: TreeStructure },
+  { href: '/taxonomy-explorer/attack-tree', label: 'Attack Tree', icon: GitBranch },
   { href: '/taxonomy-explorer/attack-vectors', label: 'Attack Vectors', icon: ListIcon },
   { href: '/taxonomy-explorer/safeguards', label: 'Safeguards', icon: ShieldIcon },
   { href: '/taxonomy-explorer/references', label: 'References', icon: BookOpen },
