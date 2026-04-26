@@ -11,7 +11,10 @@ import {
   BookOpen, 
   Github, 
   ExternalLink,
-  ArrowRight 
+  ArrowRight,
+  GitCompare,
+  BarChart3,
+  GitBranch
 } from 'lucide-react'
 import TaxonomyNavigation from '@/components/taxonomy/taxonomy-navigation'
 
@@ -54,6 +57,30 @@ export default function TaxonomyHome() {
       description: '300+ resources linked to attack vectors and safeguards',
       icon: BookOpen,
       href: '/taxonomy-explorer/references',
+    },
+  ]
+
+  const advancedFeatures = [
+    {
+      title: 'Taxonomy Comparison',
+      description: 'Compare different versions or instances of your taxonomies side-by-side',
+      icon: GitCompare,
+      href: '/taxonomy-explorer/compare',
+      badge: 'Phase 4',
+    },
+    {
+      title: 'Dashboards & Analytics',
+      description: 'Visualize severity distributions, coverage metrics, and growth trends',
+      icon: BarChart3,
+      href: '/taxonomy-explorer/compare',
+      badge: 'Phase 6',
+    },
+    {
+      title: 'Version Control',
+      description: 'Track changes, rollback versions, and collaborate with your team',
+      icon: GitBranch,
+      href: '/admin/taxonomies',
+      badge: 'Phase 5',
     },
   ]
 
@@ -172,6 +199,36 @@ export default function TaxonomyHome() {
         </div>
       </section>
 
+      {/* Advanced Features */}
+      <section className="container py-12">
+        <h2 className="text-2xl font-bold mb-8 text-center">Advanced Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {advancedFeatures.map((feature) => {
+            const Icon = feature.icon
+            return (
+              <Link key={feature.href} href={feature.href}>
+                <Card className="card-hover h-full cursor-pointer">
+                  <CardHeader className="space-y-4">
+                    <div className="flex items-start justify-between">
+                      <div className="bg-primary/10 w-fit p-3 rounded-lg">
+                        <Icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <div className="text-xs font-semibold px-2 py-1 bg-primary/10 text-primary rounded">
+                        {feature.badge}
+                      </div>
+                    </div>
+                    <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="container py-12 border-t">
         <div className="max-w-2xl mx-auto text-center space-y-6">
@@ -183,8 +240,8 @@ export default function TaxonomyHome() {
             <Link href="/taxonomy-explorer/attack-tree">
               <Button>Start Exploring</Button>
             </Link>
-            <Link href="/taxonomy-explorer/documentation">
-              <Button variant="outline">Read Documentation</Button>
+            <Link href="/taxonomy-explorer/compare">
+              <Button variant="outline">Compare Taxonomies</Button>
             </Link>
           </div>
         </div>
