@@ -1,5 +1,5 @@
 // Server-only module to read and normalize vulnerabilities from
-// https://github.com/khulnasoft-lab/vuln-list using the GitHub Contents API.
+// https://github.com/cvedb/vuln-list using the GitHub Contents API.
 //
 // It supports multiple sources (ghsa, nvd, osv) and normalizes fields into a
 // common Vulnerability shape. Uses the server-side GITHUB_TOKEN when available

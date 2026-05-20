@@ -11,7 +11,9 @@ const nav = [
   { href: "/vulnerabilities", label: "Vulnerabilities" },
   { href: "/advisories", label: "Advisories" },
   { href: "/exploitdb", label: "ExploitDB" },
+  { href: "/taxonomy-explorer", label: "Taxonomy" },
   { href: "/resources", label: "Resources" },
+  { href: "/setup", label: "Setup" },
   { href: "/api-docs", label: "API Docs" },
 ]
 

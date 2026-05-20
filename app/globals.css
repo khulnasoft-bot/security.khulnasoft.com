@@ -31,6 +31,16 @@
   --chart-3: 197 37% 24%;
   --chart-4: 43 74% 66%;
   --chart-5: 27 87% 67%;
+
+  /* Severity color tokens */
+  --severity-critical: 0 100% 50%;
+  --severity-critical-light: 0 100% 95%;
+  --severity-high: 25 95% 53%;
+  --severity-high-light: 25 95% 92%;
+  --severity-medium: 38 92% 50%;
+  --severity-medium-light: 38 92% 90%;
+  --severity-low: 142 71% 45%;
+  --severity-low-light: 142 71% 90%;
 }
 
 .dark {
@@ -59,6 +69,16 @@
   --chart-3: 30 80% 55%;
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
+
+  /* Dark mode severity colors */
+  --severity-critical: 0 89% 60%;
+  --severity-critical-light: 0 89% 20%;
+  --severity-high: 25 95% 60%;
+  --severity-high-light: 25 95% 25%;
+  --severity-medium: 38 92% 60%;
+  --severity-medium-light: 38 92% 25%;
+  --severity-low: 142 71% 55%;
+  --severity-low-light: 142 71% 20%;
 }
 
 /* English: Base layer for smooth font rendering and layout. */
@@ -87,4 +107,74 @@
 
 .search-glow:focus {
   box-shadow: 0 0 0 4px hsl(var(--primary) / 0.25);
+}
+
+/* English: Card hover utility for smooth transitions. */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+}
+
+/* English: Severity badge utilities */
+.badge-critical {
+  background-color: hsl(var(--severity-critical-light));
+  color: hsl(var(--severity-critical));
+}
+
+.dark .badge-critical {
+  background-color: hsl(var(--severity-critical-light));
+  color: hsl(var(--severity-critical));
+}
+
+.badge-high {
+  background-color: hsl(var(--severity-high-light));
+  color: hsl(var(--severity-high));
+}
+
+.dark .badge-high {
+  background-color: hsl(var(--severity-high-light));
+  color: hsl(var(--severity-high));
+}
+
+.badge-medium {
+  background-color: hsl(var(--severity-medium-light));
+  color: hsl(var(--severity-medium));
+}
+
+.dark .badge-medium {
+  background-color: hsl(var(--severity-medium-light));
+  color: hsl(var(--severity-medium));
+}
+
+.badge-low {
+  background-color: hsl(var(--severity-low-light));
+  color: hsl(var(--severity-low));
+}
+
+.dark .badge-low {
+  background-color: hsl(var(--severity-low-light));
+  color: hsl(var(--severity-low));
+}
+
+/* English: Smooth transitions for all interactive elements */
+@layer components {
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .hover-lift {
+    @apply hover:translate-y-[-4px] transition-transform duration-300;
+  }
+
+  .glass-effect {
+    @apply bg-background/60 backdrop-blur-sm border border-primary/10;
+  }
 }

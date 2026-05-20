@@ -1,11 +1,27 @@
 import { Badge } from "@/components/ui/badge"
+import { AlertOctagon, AlertTriangle, AlertCircle } from "lucide-react"
 
 export function SeverityBadge({ score }: { score: number }) {
-  let cls = "bg-green-500/20 text-green-600 border-green-500/30"
-  if (score >= 7) cls = "bg-red-500/20 text-red-600 border-red-500/30"
-  else if (score >= 4) cls = "bg-amber-500/20 text-amber-600 border-amber-500/30"
+  let badgeClass = "badge-low"
+  let Icon = AlertCircle
+  
+  if (score >= 9) {
+    badgeClass = "badge-critical"
+    Icon = AlertOctagon
+  } else if (score >= 7) {
+    badgeClass = "badge-high"
+    Icon = AlertTriangle
+  } else if (score >= 4) {
+    badgeClass = "badge-medium"
+    Icon = AlertTriangle
+  }
+  
   return (
-    <Badge variant="outline" className={cls} aria-label={`Severity ${score.toFixed(1)}`}>
+    <Badge 
+      className={`${badgeClass} inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold border-0`}
+      aria-label={`Severity ${score.toFixed(1)}`}
+    >
+      <Icon className="h-3.5 w-3.5" />
       {score.toFixed(1)}
     </Badge>
   )
